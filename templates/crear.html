@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="glass rounded-3xl p-8 shadow-2xl">
+        <h2 class="text-3xl font-bold mb-8">Crear <span class="gradient-text">Evento</span></h2>
+        
+        <form action="/guardar" method="POST" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Nombre del Evento</label>
+                <input type="text" name="nombre" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Descripción</label>
+                <textarea name="descripcion" rows="3" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-indigo-500 outline-none"></textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Capacidad Máxima</label>
+                    <input type="number" name="maximo" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Vestimenta</label>
+                    <select name="vestimenta" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none">
+                        <option value="formal">Formal</option>
+                        <option value="cóctel">Cóctel</option>
+                        <option value="business casual">Business Casual</option>
+                        <option value="casual">Casual</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <input type="date" name="fecha" class="bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none" required>
+                <input type="time" name="hora" class="bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-3 text-white outline-none" required>
+            </div>
+
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 py-4 rounded-xl font-bold shadow-lg transition-all mt-4">
+                Publicar Evento
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

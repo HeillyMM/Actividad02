@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="glass rounded-3xl p-8 shadow-2xl">
+        <h2 class="text-3xl font-bold mb-8 text-white">Editar <span class="gradient-text">Evento</span></h2>
+        
+        <form action="/actualizar/{{even.id}}" method="POST" class="space-y-6">
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Nombre del Evento</label>
+                <input type="text" name="nombre" value="{{even.nombre}}" 
+                    class="w-full bg-slate-800/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-400 mb-2">Descripción</label>
+                <textarea name="descripcion" rows="3" 
+                    class="w-full bg-slate-800/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all">{{even.descripcion}}</textarea>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Anfitrión (Tú)</label>
+                    <div class="w-full bg-slate-900/50 border border-slate-800 text-slate-500 rounded-xl px-4 py-3 cursor-not-allowed">
+                        @{{even.anfitrion}}
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Máximo Invitados</label>
+                    <input type="number" name="maximo" value="{{even.maximo}}" 
+                        class="w-full bg-slate-800/50 border border-slate-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Fecha</label>
+                    <input type="date" name="fecha" value="{{even.fecha}}" 
+                        class="w-full bg-slate-800/50 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Hora</label>
+                    <input type="time" name="hora" value="{{even.hora}}" 
+                        class="w-full bg-slate-800/50 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-400 mb-2">Vestimenta</label>
+                    <select name="vestimenta" class="w-full bg-slate-800/50 border border-slate-700 text-white rounded-xl px-4 py-3 text-sm outline-none">
+                        <option value="formal" {% if even.vestimenta == 'formal' %}selected{% endif %}>Formal</option>
+                        <option value="cóctel" {% if even.vestimenta == 'cóctel' %}selected{% endif %}>Cóctel</option>
+                        <option value="casual" {% if even.vestimenta == 'business casual' %}selected{% endif %}>Business casual</option>
+                        <option value="casual" {% if even.vestimenta == 'casual' %}selected{% endif %}>Casual</option>
+                        <option value="casual" {% if even.vestimenta == 'otro' %}selected{% endif %}>otro</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="pt-4 space-y-3">
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-4 rounded-xl font-bold shadow-lg transition-all">
+                    Guardar Cambios
+                </button>
+                <a href="/" class="block text-center py-2 text-sm text-slate-500 hover:text-slate-300">
+                    Cancelar edición
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
