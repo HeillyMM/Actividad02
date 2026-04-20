@@ -6,9 +6,6 @@ app.secret_key = "clave_secreta"
 
 def init_database():
     conn = sqlite3.connect("eventos.db")
-    conn.execute("DROP TABLE eventos")
-    conn.execute("DROP TABLE inscripciones")
-    conn.execute("DROP TABLE users")
     conn.execute("""
         CREATE TABLE IF NOT EXISTS eventos(
             id INTEGER PRIMARY KEY,
