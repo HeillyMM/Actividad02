@@ -33,7 +33,8 @@ def init_database():
         CREATE TABLE IF NOT EXISTS users(
             id INTEGER PRIMARY KEY,
             username TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            email TEXT NOT NULL
         )
     """)
     conn.commit()
@@ -50,27 +51,24 @@ def index():
     conn.row_factory = sqlite3.Row
     cursor = conn.cursor()
     
-    # 1. Obtener todos los eventos
     cursor.execute("SELECT * from eventos")
     even = cursor.fetchall()
     
-    # 2. Obtener el TOTAL de inscritos por cada evento (para el contador 0/maximo)
     cursor.execute("SELECT evento_id, count(*) AS total FROM inscripciones GROUP BY evento_id")
     asistencias = cursor.fetchall()
     inscritos_dict = {row["evento_id"]: row["total"] for row in asistencias}
     
-    # 3. Obtener los IDs de los eventos donde está inscrito el usuario ACTUAL
     cursor.execute("SELECT evento_id FROM inscripciones WHERE username=?", (session["user"],))
     mias = cursor.fetchall()
-    inscritos_usuario = [row["evento_id"] for row in mias] # Lista de IDs
+    inscritos_usuario = [row["evento_id"] for row in mias] 
     
     conn.close()
     
     return render_template(
         "index.html",
         even=even,
-        inscritos=inscritos_dict, # Conteo total
-        mios=inscritos_usuario    # Lista para el botón desinscribir
+        inscritos=inscritos_dict,
+        mios=inscritos_usuario 
     )
 
 @app.route("/register", methods=["GET","POST"])
@@ -78,10 +76,11 @@ def register():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+        email = request.form["email"]
         try:
             conn = sqlite3.connect("eventos.db")
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO users(username,password) VALUES (?,?)", (username,password))
+            cursor.execute("INSERT INTO users(username,password,email) VALUES (?,?,?)", (username,password,email))
             conn.commit()
             conn.close()
             return redirect("/login")
@@ -103,6 +102,7 @@ def login():
 
         if user:
             session["user"] = username
+            session["email"] = user[3]
             return redirect("/")
         return "Credenciales incorrectas"
     return render_template("login.html")
@@ -207,7 +207,6 @@ def guardar_inscripcion(id):
     conn = sqlite3.connect("eventos.db")
     cursor = conn.cursor()
     try:
-        # Faltaba la palabra VALUES y los (?)
         cursor.execute("""
             INSERT INTO inscripciones(evento_id, username, nombre, email)
             VALUES (?, ?, ?, ?)
